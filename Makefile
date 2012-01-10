@@ -1,0 +1,2 @@
+all:
+	coffee --compile --bare .
