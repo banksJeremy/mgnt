@@ -1,4 +1,5 @@
-#!/usr/bin/env coffee
+@crypto =
+	VERSION: '0.0.0.dev'
 
 ns = ->
   if arguments.length is 1

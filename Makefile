@@ -1,2 +1,6 @@
 all:
-	coffee --compile --bare .
+	mkdir -p dist/
+	coffee --compile . dist/
+
+clean:
+	rm -rf dist/
