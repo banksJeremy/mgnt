@@ -21,15 +21,9 @@ class Bytes
     i = @length - 1
     carry = 0
     while i >= 0
-      @[i] += other[i] + carry
-      if carry = @[i] >> 8
-        @[i] %= 0xFF
-      i -= 1
-    i = @length - 1
-    while carry and i >= 0
-      @[i] += carry
-      if carry = @[i] >> 8
-        @[i] %= 0xFF
+      sum = @[i] + other[i] + carry
+      carry = sum >> 8
+      @[i] = sum & 255
       i -= 1
     @
   
@@ -168,13 +162,13 @@ class Sha1
     
     for i in [0..79]
       if 0 <= i <= 19
-        f = b.band(c).bor(b.bnot().band(d))
+        f = (b.band c).bor(b.bnot().band d)
         k = new Bytes([0x5A, 0x82, 0x79, 0x99])
       else if 20 <= i <= 39
         f = b.bxor(c).bxor(d)
         k = new Bytes([0x6E, 0xD9, 0xEB, 0xA1])
       else if 40 <= i <= 59
-        f = b.band(c).bor(b.band(d)).bor(c.band(d))
+        f = (b.band c).bor(b.band d).bor(c.band d)
         k = new Bytes([0x8F, 0x1B, 0xBC, 0xDC])
       else if 60 <= i <= 79
         f = b.bxor(c).bxor(d)
@@ -187,7 +181,6 @@ class Sha1
       b = a
       a = temp
     
-    
     state.write(state.slice(0, 4).biadd(a), 0)
     state.write(state.slice(4, 8).biadd(b), 4)
     state.write(state.slice(8, 12).biadd(c), 8)
@@ -195,15 +188,21 @@ class Sha1
     state.write(state.slice(16, 20).biadd(e), 16)
   
   pad = (buffer, messageLength) ->
-    buffer.write([128])
+    buffer.write([0x80])
     
     if messageLength % 64 != 56
-      buffer.write([], messageLength - messageLength % 64 + 56)
+      buffer.write([], messageLength - (messageLength % 64) + 56)
     
-    n = Bytes.fromHex((messageLength * 8).toString(16))
+    console.log buffer.length
+    
+    if messageLength or true
+      hexLength = (messageLength * 8).toString(16)
+      n = Bytes.fromHex(hexLength)
+    else
+      n = new Bytes
+    
     nPadded = new Bytes
     nPadded.write n, 8 - n.length
-    
     buffer.write nPadded
   
   digest: ->
