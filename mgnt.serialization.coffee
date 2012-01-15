@@ -1,7 +1,7 @@
 {Bytes, Buffer} = @mgnt
 
-Bencode =
-  encode: (o, result = new Bytes, offset = 0) ->
+Bencoding =
+  encode: (o, output = new Bytes) ->
     if typeof o is 'number'
       if not (-9007199254740992 <= o <= +9007199254740992 and o % 1 is 0)
         throw new Error 'Numbers must be integers from -9007199254740992 to +9007199254740992'
@@ -33,11 +33,5 @@ Bencode =
   
   decode: (data, offset = 0) ->
     pass
-  
-  # also mirror the JSON API
-  stringify: (o) ->  Becode.encode(o).toString()
-  parse: (data) -> Bencode.decode(data)
 
-# it could call itself JSONP, but actually be runing a script to generate the result! =P
-
-@mgnt.encoding = {Bencode, JSON}
+@mgnt.serialization = {Bencoding}

@@ -46,11 +46,6 @@ class Bytes
     if typeof n isnt 'number' or n % 1 isnt 0
       throw new Error "right-side must be an integer, is #{typeof n} #{n}"
   
-  # + add, += iadd (wrapping)
-  # - sub, -= isub (wrapping)
-  # .toUint()
-  # ::fromUint(n, size)
-  
   iadd: (other) ->
     @_verifyEqualLength other
     
