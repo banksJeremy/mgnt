@@ -71,14 +71,14 @@ class Bytes
       (((@[i - byteshift + @length - 1] ? 0) << (8 - bitshift)) & 255)
     
   or: (other) ->
-    if @length != other.length then throw new Error 'Bytes must have equal length'
+    @_verifyEqualLength other
     
-    Bytes(@[i] | other[i] for i in [0...@length])
+    new Bytes (@[i] | other[i] for i in [0...@length])
   
   and: (other) ->
-    if @length != other.length then throw new Error 'Bytes must have equal length'
+    @_verifyEqualLength other
     
-    Bytes(@[i] & other[i] for i in [0...@length])
+    new Bytes (@[i] & other[i] for i in [0...@length])
   
   # TODO
   ixor: -> @xor arguments...
@@ -86,14 +86,14 @@ class Bytes
   ior: -> @or arguments...
   
   xor: (other) ->
-    if @length != other.length then throw new Error 'Bytes must have equal length'
+    @_verifyEqualLength other
     
-    Bytes(@[i] ^ other[i] for i in [0...@length])
+    new Bytes (@[i] ^ other[i] for i in [0...@length])
   
   ixor: -> @xor arguments...
   
   not: ->
-    Bytes(~byte + 256 for byte in @)
+    new Bytes (~byte + 256 for byte in @)
   
   @fromHex: (digits) ->
     unless typeof digits is 'string'
