@@ -16,7 +16,7 @@ class Bytes
     # their data goes away (that is to say, while readOffset = 0 and writeOffset = length)
     @persistent = persistent
     @_readOffset = 0
-    @_writeOffset = 0
+    @_writeOffset = 0 # end of strin
     
     if typeof bytes is 'string'
       bytes = (bytes.charCodeAt(i) for i in [0...bytes.length])
@@ -28,8 +28,6 @@ class Bytes
     @length = bytes.length
   
   @cast: (o) -> if o instanceof @ then o else @ o
-  
-  _nonpersistent
   
   _verifyEqualLength: (other) ->
     if @length isnt other.length
@@ -187,7 +185,23 @@ class Bytes
   concat: (bytes) ->
     (new Bytes @).extend(bytes)
 
-@crypto = {Bytes}
+class Buffer extends Bytes
+  
+
+@crypto = {Bytes, Buffer}
+
+# you can use "content" values in the info dict to just put the data directly there.
+# or maybe do this for a few primary files (README) while the rest go through BitTorrent?!
+# that would be so practical.
+# they would start at the beginning of the file, but they don't have to be the full-length.
+# you could just put the top of whatever file, if it makes sense.
+# when you mirror a page, it could put the content of the page in the info dict
+# but put all of the resources in the torrent.
+# 
+# that might be a little bit tricky.
+# just work on getting the page itself for now.
+# 
+# data
 
 # --- @crypto.util ---
 
