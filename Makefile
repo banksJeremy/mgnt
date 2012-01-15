@@ -1,6 +1,6 @@
 all:
 	mkdir -p dist/
-	coffee --compile . dist/
+	coffee -o dist/ --compile .
 
 clean:
 	rm -rf dist/
