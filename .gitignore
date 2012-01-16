@@ -1,3 +1,5 @@
 *.js
-.svn
+test/mgnt.base.generated.spec
 docs/
+
+.svn

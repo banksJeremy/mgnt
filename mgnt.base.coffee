@@ -29,9 +29,10 @@ class Bytes
     
     if typeof bytes is 'string'
       bytes = (bytes.charCodeAt(i) for i in [0...bytes.length])
+      console.log bytes
     
     for byte, i in bytes
-      unless typeof byte is 'number' and 0 <= byte <= 255
+      unless typeof byte is 'number' and 0 <= byte <= 255 and byte % 1 is 0
         throw new Error "Invalid byte value at index #{i}: #{byte}", byte
       @[i] = byte
     @length = bytes.length
@@ -156,7 +157,7 @@ class Bytes
   read: (length) ->
     
   
-  write: (bytes) ->
+  write: (bytes, offset) ->
     bytes = Bytes.cast bytes
     if not offset?
       offset = @length
@@ -190,5 +191,5 @@ class Bytes
     (new Bytes @).extend(bytes)
 
 class Buffer extends Bytes
-	
+  
 @mgnt = {Bytes, Buffer}
